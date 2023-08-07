@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'db_star_wars',
+      database: 'db_movies',
       autoLoadEntities: true,
       synchronize: true,
     }),
