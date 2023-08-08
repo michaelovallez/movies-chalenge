@@ -6,7 +6,7 @@ export class UpdateMovieDto {
     title: string;
     @IsOptional()
     @IsDateString({ strict: false, strictSeparator: true })
-    relase_date: string;
+    release_date: string;
     @IsString()
     @IsOptional()
     director: string;

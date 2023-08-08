@@ -1,5 +1,6 @@
 import { Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, Entity, UpdateDateColumn } from "typeorm";
 import { IsEmail } from 'class-validator';
+import { Role } from "src/common/enums/role.enum";
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -9,9 +10,9 @@ export class User {
     @Column({unique: true, nullable: false})
     @IsEmail()
     email: string;
-    @Column({nullable: false})
+    @Column({nullable: false, select: false})
     password: string;
-    @Column({default: 'user'})
+    @Column({type:"enum", default: Role.USER, enum: Role})
     role: string;
     @DeleteDateColumn()
     deleted_at: Date;

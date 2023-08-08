@@ -7,7 +7,7 @@ export class Movie {
     @Column()
     title: string;
     @Column()
-    relase_date: string;
+    release_date: string;
     @Column()
     director: string;
     @Column()

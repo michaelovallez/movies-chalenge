@@ -1,40 +1,36 @@
-import { Body, Controller, Post, Get,Req,UseGuards  } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveInterface } from '../common/interface/user-active.interface';
+import { Role } from '../common/enums/role.enum';
 import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
-import { LoginrDto } from './dto/login.dto';
-import { AuthGuard } from './guards/auth.guard';
-import { RolesGuard } from './guards/roles.guard';
-import { Roles } from './decorators/roles.decorator';
-import { Role } from './utils/role.enum';
 import { Auth } from './decorators/auth.decorator';
-// import { requestWithUser } from './utils/request-with-user';
-interface requestWithUser extends Request {
-    user: {
-        email: string;
-        role: string;
-    }
-}
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+
 @Controller('auth')
-export class AuthController  {
-    constructor(private readonly authService: AuthService) { }
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
-    @Post('register')
-    register(@Body() RegisterDto: RegisterDto ) {
-        console.log(RegisterDto);
-        return this.authService.register(RegisterDto);
-    }
+  @Post('register')
+  register(
+    @Body()
+    registerDto: RegisterDto,
+  ) {
+    return this.authService.register(registerDto);
+  }
 
-    @Post('login')
-    login(@Body() LoginrDto: LoginrDto) {
-        return this.authService.login(LoginrDto);
-    }
+  @Post('login')
+  login(
+    @Body()
+    loginDto: LoginDto,
+  ) {
+    return this.authService.login(loginDto);
+  }
 
-    @Get('profile')
-    @Auth(Role.ADMIN)
-    profile(
-        @Req() req: requestWithUser,
-    ){
-        return this.authService.profile(req.user);
-    }
+  @Get('profile')
+  @Auth(Role.USER)
+  profile(@ActiveUser() user: UserActiveInterface) {
+    console.log(user)
+    return this.authService.profile(user);
+  }
 }

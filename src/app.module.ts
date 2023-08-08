@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { MoviesModule } from './movies/movies.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { SwapiModule } from './swapi/swapi.module';
 @Module({
   imports: [ 
     MoviesModule,
@@ -20,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
     }),
      UsersModule,
      AuthModule,
+     SwapiModule
   ],
   controllers: [AppController],
   providers: [AppService],

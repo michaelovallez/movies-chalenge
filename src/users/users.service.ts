@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
@@ -16,7 +16,7 @@ export class UsersService {
     try {
       return await this.userRepository.save(createUserDto);
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -24,7 +24,7 @@ export class UsersService {
     try {
       return await this.userRepository.find();
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -32,18 +32,25 @@ export class UsersService {
     try {
       return await this.userRepository.findOneBy({id_user: id});
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException(error);
     }
   }
   async fineOneByEmail(email: string) {
     return await this.userRepository.findOneBy({email}); 
   }
-
+  async fineByEmailWithPassword(email: string) {
+    return await this.userRepository.findOne({
+      where:{
+        email
+      },
+      select: ['id_user', 'name', 'email', 'password', 'role']
+    }); 
+  }
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
       return await this. userRepository.update({id_user: id}, updateUserDto);
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -51,7 +58,7 @@ export class UsersService {
     try {
       return await this.userRepository.softDelete({id_user: id});
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException(error);
     }
   }
 }

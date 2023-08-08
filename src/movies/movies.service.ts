@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Repository } from 'typeorm';
@@ -13,10 +13,33 @@ export class MoviesService {
   ) { }  
   async create(createMovieDto: CreateMovieDto) {
     try {
-      const movie = this.movieRepository.create(createMovieDto);
-      return await this.movieRepository.save(movie);
+      const existingMovie = await this.movieRepository.findOneBy({ title: createMovieDto.title });
+      if (existingMovie) {
+        throw new BadRequestException('Movie already exists');
+      }else{
+        const movie = this.movieRepository.create(createMovieDto);
+        return await this.movieRepository.save(movie);
+      }
     } catch (error) {
-      console.log(error);
+      throw new BadRequestException(error);
+    }
+  }
+  async createBulk(movieDtos: CreateMovieDto[]): Promise<Movie[]> {
+    try {
+      const savedMovies = await Promise.all(
+        movieDtos.map(async (movieDto) => {
+          const existingMovie = await this.movieRepository.findOneBy({ title: movieDto.title });
+
+          if (!existingMovie) {
+            const newMovie = this.movieRepository.create(movieDto);
+            return this.movieRepository.save(newMovie);
+          }
+        })
+      );
+
+      return savedMovies;
+    } catch (error) {
+      throw new BadRequestException(error);
     }
   }
 
@@ -28,7 +51,7 @@ export class MoviesService {
     try {
       return await this.movieRepository.findOneBy({id_movie: id});
     } catch (error) {
-      console.log(error);
+      throw new BadRequestException(error);
     }
   }
 
@@ -36,7 +59,7 @@ export class MoviesService {
     try {
       return await this.movieRepository.update({id_movie: id}, updateMovieDto);
     } catch (error) {
-      console.log(error);
+      throw new BadRequestException(error);
     }
   }
 
@@ -44,7 +67,7 @@ export class MoviesService {
     try {
       return await this.movieRepository.softDelete({id_movie: id}); 
     } catch (error) {
-      console.log(error);
+      throw new BadRequestException(error);
     }
   }
 }

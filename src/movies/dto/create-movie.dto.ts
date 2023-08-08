@@ -4,7 +4,7 @@ export class CreateMovieDto {
     @IsString()
     title: string;
     @IsDateString({ strict: false, strictSeparator: true })
-    relase_date: string;
+    release_date: string;
     @IsString()
     director: string;
     @IsString()
