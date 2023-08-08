@@ -1,0 +1,9 @@
+{
+    "apps": [
+      {
+        "name": "movies-challenge",
+        "script": "node dist/main",
+        "env_file": ".env"
+      }
+    ]
+  }

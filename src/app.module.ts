@@ -6,16 +6,18 @@ import { MoviesModule } from './movies/movies.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SwapiModule } from './swapi/swapi.module';
+import * as dotenv from 'dotenv';
+dotenv.config(); // Cargar variables de entorno desde .env
 @Module({
   imports: [ 
     MoviesModule,
      TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'db_movies',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_SCHEMA,
       autoLoadEntities: true,
       synchronize: true,
     }),
