@@ -7,7 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SwapiModule } from './swapi/swapi.module';
 import * as dotenv from 'dotenv';
-dotenv.config(); // Cargar variables de entorno desde .env
+dotenv.config();
 @Module({
   imports: [ 
     MoviesModule,

@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 export const jwtConstants = {
-    secret: 'mike-secret-key',
+    secret: process.env.API_KEY,
 }
