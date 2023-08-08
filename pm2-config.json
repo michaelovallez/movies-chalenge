@@ -2,7 +2,7 @@
     "apps": [
       {
         "name": "movies-challenge",
-        "script": "node dist/main",
+        "script": "start:prod",
         "env_file": ".env"
       }
     ]

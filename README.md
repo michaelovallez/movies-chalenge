@@ -27,11 +27,11 @@
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
+Cambiar nombre del archivo .env.local por .env, reemplazando cada variable de entorno segun la configuracion de la base de datos local.
 
 ```bash
 $ npm install
 ```
-
 ## Running the app
 
 ```bash
